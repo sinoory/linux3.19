@@ -2623,6 +2623,7 @@ struct sk_buff *dev_hard_start_xmit(struct sk_buff *first, struct net_device *de
 	}
 
 out:
+    printk("DBG dev dev_hard_start_xmit res=%d\n",rc);
 	*ret = rc;
 	return skb;
 }
@@ -2902,6 +2903,7 @@ static int __dev_queue_xmit(struct sk_buff *skb, void *accel_priv)
 #endif
 	trace_net_dev_queue(skb);
 	if (q->enqueue) {
+        printk("DBG dev __dev_queue_xmit has queue\n");
 		rc = __dev_xmit_skb(skb, q, dev, txq);
 		goto out;
 	}
@@ -2968,13 +2970,18 @@ out:
 
 int dev_queue_xmit(struct sk_buff *skb)
 {
-	return __dev_queue_xmit(skb, NULL);
+	int res= __dev_queue_xmit(skb, NULL);
+    printk("DBG dev_queue_xmit res=%d\n");
+    return res;
 }
 EXPORT_SYMBOL(dev_queue_xmit);
 
 int dev_queue_xmit_accel(struct sk_buff *skb, void *accel_priv)
 {
-	return __dev_queue_xmit(skb, accel_priv);
+	int res= __dev_queue_xmit(skb, accel_priv);
+    printk("DBG dev_queue_xmit_accel res=%d\n");
+    return res;
+    
 }
 EXPORT_SYMBOL(dev_queue_xmit_accel);
 
